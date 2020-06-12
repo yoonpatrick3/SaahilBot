@@ -7,7 +7,7 @@ import os
 
 client = commands.Bot(command_prefix = 'kumar ')
 
-client_token = 'NzIwNzkwMzg2MzM5MDg2MzUx.XuLGfw.x_Ub7YrHfBXSDzx1WMQGL2hQbxY'
+client_token = 'NzIwNzkwMzg2MzM5MDg2MzUx.XuLy0A.BxeKRwipa_ATdQtbUU3jyF4O96o'
 
 saahilID = 267871956844412928
 patID = 391344148738998273
