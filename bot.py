@@ -13,6 +13,7 @@ saahilID = 267871956844412928
 patID = 391344148738998273
 botID = 720790386339086351
 work_channel_id = 720745806939815997
+groovy_channel_id = 720671297633517628
 
 def get_counter():
     try:
@@ -22,6 +23,20 @@ def get_counter():
             return num
     except:
         return 0
+
+def get_groovy_message(msg):
+    global saahilMessages
+    if "-p" in msg:
+        return "Dude what is your song choice..."
+    elif "-skip" in msg:
+        return "Why are you skipping man"
+    elif "-pause" in msg:
+        return "Don't pause my waifu GroovyBot"
+    elif "-disconnect" in msg:
+        return "WHY DID U MAKE GROOVYBOT LEAVE <:PepeHands:720675250467242065>"
+    else:
+        saahilMessages += 1
+        return "Shut up Saahil <:WeirdChamp:720710138759086080>"
 
 
 saahilMessages = get_counter()
@@ -49,13 +64,15 @@ async def on_ready():
 async def on_member_join(member):
     print(f'{member} has joined a server.')
 
-
 @client.event
 async def on_message(message):
     global saahilMessages
-    if int(message.author.id) == saahilID and int(message.channel.id) != work_channel_id:
-        saahilMessages += 1
-        await message.channel.send("Shut up Saahil <:WeirdChamp:720710138759086080>")
+    if int(message.author.id) == saahilID:
+        if int(message.channel.id) != work_channel_id:
+            saahilMessages += 1
+            await message.channel.send("Shut up Saahil <:WeirdChamp:720710138759086080>")
+        elif not int(message.channel.id) == groovy_channel_id:
+            await message.channel.id.send(get_groovy_message(message.content))
     await client.process_commands(message)
 
 @client.command()
