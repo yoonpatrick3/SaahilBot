@@ -4,10 +4,19 @@ import random
 import time
 import asyncio
 import os
+import re
 
 client = commands.Bot(command_prefix = 'kumar ')
 
 client_token = 'NzIwNzkwMzg2MzM5MDg2MzUx.XuLy0A.BxeKRwipa_ATdQtbUU3jyF4O96o'
+
+regex = re.compile(
+        r'^(?:http|ftp)s?://' # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+        r'localhost|' #localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+        r'(?::\d+)?' # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
 saahilID = 267871956844412928
 patID = 391344148738998273
@@ -114,6 +123,54 @@ async def fuck(ctx):
 @client.command(aliases=['great'])
 async def good(ctx):
     await ctx.send("hehe thanks bb <3 <:PepeLove:720828348103786517>")
+
+@client.command()
+async def save_link(ctx, *args):
+    desc = ""
+    link = ""
+    for arg in args:
+        if re.match(regex, arg):
+            link = arg
+        else:
+            desc += arg
+            desc += " "
+    with open("links.txt", "a+") as f:
+        f.write(desc)
+        f.write(link)
+        f.write("\n")
+        f.close
+    await ctx.send("Saved successfully <:PepeYes:721145634454765628>")
+
+def getLinkInformation(line):
+    lines = line.split(" ")
+    desc = ""
+    link = ""
+    for l in lines:
+        if re.match(regex, l):
+            link = l
+        else:
+            desc += l
+            desc += " "
+    return desc, link
+
+@client.command()
+async def get_link(ctx, *, args):
+    print(args)
+    grabbed_links = []
+    with open("links.txt", "r+") as f:
+        for line in f:
+            desc, link = getLinkInformation(line.strip())
+            if args in desc:
+                grabbed_links.append([desc, link])
+        f.close()
+    if len(grabbed_links) == 0:
+        await ctx.send("Can't find that description <:FeelsBadMan:721147885588054095>")
+    else:
+        for lines in grabbed_links:
+            newLine = lines[0] + " " + lines[1]
+            await ctx.send(newLine)
+    
+
 
 
 
