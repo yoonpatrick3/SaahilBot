@@ -23,6 +23,8 @@ patID = 391344148738998273
 botID = 720790386339086351
 work_channel_id = 720745806939815997
 groovy_channel_id = 720671297633517628
+general_channel_id = 720670834561253489
+debug_channel_id = 721143621536972951
 
 def get_counter():
     try:
@@ -77,7 +79,7 @@ async def on_member_join(member):
 async def on_message(message):
     global saahilMessages
     if int(message.author.id) == saahilID:
-        if int(message.channel.id) != work_channel_id:
+        if int(message.channel.id) == general_channel_id or int(message.channel.id) == debug_channel_id:
             saahilMessages += 1
             await message.channel.send("Shut up Saahil <:WeirdChamp:720710138759086080>")
         elif not int(message.channel.id) == groovy_channel_id:
