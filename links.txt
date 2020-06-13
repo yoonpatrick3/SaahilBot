@@ -1,0 +1,2 @@
+swiftUI access APIS  https://www.youtube.com/watch?v=xT4wGOc2jd4
+swiftUI asset resizing https://stackoverflow.com/questions/29874499/tabbaritems-and-setting-their-image-sizes/29874619#29874619

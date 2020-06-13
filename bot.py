@@ -37,13 +37,13 @@ def get_counter():
 
 def get_groovy_message(msg):
     global saahilMessages
-    if "-p" in msg:
+    if "-p" in msg.lower():
         return "Dude what is your song choice..."
-    elif "-skip" in msg:
+    elif "-skip" in msg.lower():
         return "Why are you skipping man"
-    elif "-pause" in msg:
+    elif "-pause" in msg.lower():
         return "Don't pause my waifu GroovyBot"
-    elif "-disconnect" in msg:
+    elif "-disconnect" in msg.lower():
         return "WHY DID U MAKE GROOVYBOT LEAVE <:PepeHands:720675250467242065>"
     else:
         saahilMessages += 1
@@ -80,10 +80,11 @@ async def on_message(message):
     global saahilMessages
     if int(message.author.id) == saahilID:
         if int(message.channel.id) == general_channel_id or int(message.channel.id) == debug_channel_id:
+            print("in here")
             saahilMessages += 1
             await message.channel.send("Shut up Saahil <:WeirdChamp:720710138759086080>")
-        elif not int(message.channel.id) == groovy_channel_id:
-            await message.channel.id.send(get_groovy_message(message.content))
+        elif int(message.channel.id) == groovy_channel_id:
+            await message.channel.send(get_groovy_message(message.content))
     await client.process_commands(message)
 
 @client.command()
@@ -162,7 +163,7 @@ async def get_link(ctx, *, args):
     with open("links.txt", "r+") as f:
         for line in f:
             desc, link = getLinkInformation(line.strip())
-            if args in desc:
+            if args.lower() in desc.lower():
                 grabbed_links.append([desc, link])
         f.close()
     if len(grabbed_links) == 0:
