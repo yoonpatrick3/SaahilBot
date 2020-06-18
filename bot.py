@@ -5,6 +5,7 @@ import time
 import asyncio
 import os
 import re
+from firebasedb import get_counter, update_counter, set_link, get_fb_link
 
 client = commands.Bot(command_prefix = 'kumar ')
 
@@ -26,17 +27,7 @@ groovy_channel_id = 720671297633517628
 general_channel_id = 720670834561253489
 debug_channel_id = 721143621536972951
 
-def get_counter():
-    try:
-        with open("stats.txt", "r") as f:
-            msg = f.readline()
-            num = int(msg.split("Saahil Counter: ")[1])
-            return num
-    except:
-        return 0
-
 def get_groovy_message(msg):
-    global saahilMessages
     if "-p" in msg.lower():
         return "Dude what is your song choice..."
     elif "-skip" in msg.lower():
@@ -46,26 +37,8 @@ def get_groovy_message(msg):
     elif "-disconnect" in msg.lower():
         return "WHY DID U MAKE GROOVYBOT LEAVE <:PepeHands:720675250467242065>"
     else:
-        saahilMessages += 1
+        update_counter()
         return "Shut up Saahil <:WeirdChamp:720710138759086080>"
-
-
-saahilMessages = get_counter()
-
-async def update_stats():
-    await client.wait_until_ready()
-    global saahilMessages
-
-    while not client.is_closed():
-        try:
-            print("logged")
-            with open("stats.txt", "w+") as f:
-                f.write(f"Time: {int(time.time())}, Saahil Counter: {saahilMessages}\n")
-                f.close()
-                await asyncio.sleep(5)
-        except Exception as e:
-            print(e)
-            await asyncio.sleep(5)
 
 @client.event
 async def on_ready():
@@ -77,11 +50,10 @@ async def on_member_join(member):
 
 @client.event
 async def on_message(message):
-    global saahilMessages
     if int(message.author.id) == saahilID:
         if int(message.channel.id) == general_channel_id or int(message.channel.id) == debug_channel_id:
             print("in here")
-            saahilMessages += 1
+            update_counter()
             await message.channel.send("Shut up Saahil <:WeirdChamp:720710138759086080>")
         elif int(message.channel.id) == groovy_channel_id:
             await message.channel.send(get_groovy_message(message.content))
@@ -115,8 +87,7 @@ async def _8ball(ctx, *, question):
 
 @client.command()
 async def counter(ctx):
-    global saahilMessages
-    counterMessage = "The Saahil Shut Up Counter: " + str(saahilMessages)
+    counterMessage = "The Saahil Shut Up Counter: " + str(get_counter())
     await ctx.send(counterMessage)
 
 @client.command()
@@ -127,56 +98,33 @@ async def fuck(ctx):
 async def good(ctx):
     await ctx.send("hehe thanks bb <3 <:PepeLove:720828348103786517>")
 
-@client.command()
-async def save_link(ctx, *args):
+def getLinkInformation(lines):
     desc = ""
     link = ""
-    for arg in args:
-        if re.match(regex, arg):
-            link = arg
-        else:
-            desc += arg
-            desc += " "
-    with open("links.txt", "a+") as f:
-        f.write(desc)
-        f.write(link)
-        f.write("\n")
-        f.close
-    await ctx.send("Saved successfully <:PepeYes:721145634454765628>")
-
-def getLinkInformation(line):
-    lines = line.split(" ")
-    desc = ""
-    link = ""
-    for l in lines:
+    for l in line:
         if re.match(regex, l):
             link = l
         else:
             desc += l
             desc += " "
-    return desc, link
+    
+    return desc, link[:-1]
+
+@client.command()
+async def save_link(ctx, *args):
+    desc, link = getLinkInformation(args)
+    set_link(desc, link)
+    await ctx.send("Saved successfully <:PepeYes:721145634454765628>")
+
 
 @client.command()
 async def get_link(ctx, *, args):
-    print(args)
-    grabbed_links = []
-    with open("links.txt", "r+") as f:
-        for line in f:
-            desc, link = getLinkInformation(line.strip())
-            if args.lower() in desc.lower():
-                grabbed_links.append([desc, link])
-        f.close()
-    if len(grabbed_links) == 0:
-        await ctx.send("Can't find that description <:FeelsBadMan:721147885588054095>")
+    descArray, linkArray = get_fb_link(args)
+    if len(descArray) == 0:
+        await ctx.send("Couldn't find that description <:FeelsBadMan:721147885588054095>")
     else:
-        for lines in grabbed_links:
-            newLine = lines[0] + " " + lines[1]
-            await ctx.send(newLine)
-    
+        for i in range(len(descArray)):
+            await ctx.send(descArray[i] + " " + linkArray[i])
 
-
-
-
-client.loop.create_task(update_stats())
 
 client.run(client_token)
