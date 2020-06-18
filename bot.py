@@ -101,7 +101,7 @@ async def good(ctx):
 def getLinkInformation(lines):
     desc = ""
     link = ""
-    for l in line:
+    for l in lines:
         if re.match(regex, l):
             link = l
         else:
@@ -112,9 +112,12 @@ def getLinkInformation(lines):
 
 @client.command()
 async def save_link(ctx, *args):
-    desc, link = getLinkInformation(args)
-    set_link(desc, link)
-    await ctx.send("Saved successfully <:PepeYes:721145634454765628>")
+    try:
+        desc, link = getLinkInformation(args)
+        set_link(desc, link)
+        await ctx.send("Saved successfully <:PepeYes:721145634454765628>")
+    except:
+        await ctx.send("SaahilBot broke yieks")
 
 
 @client.command()
