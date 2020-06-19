@@ -141,4 +141,8 @@ async def join(ctx):
 async def leave(ctx):
     await ctx.voice_client.disconnect()
 
+@client.command()
+async def shut(ctx):
+    await ctx.send("Shut up Saahil WeirdChamp", tts=True)
+
 client.run(client_token)
