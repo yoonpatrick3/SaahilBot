@@ -6,10 +6,11 @@ import asyncio
 import os
 import re
 from firebasedb import get_counter, update_counter, set_link, get_fb_link
+#import pynacl
 
 client = commands.Bot(command_prefix = 'kumar ')
 
-client_token = 'NzIwNzkwMzg2MzM5MDg2MzUx.XuwcPQ.xEAvAMjQdo6QIU-ImRIdP8K-ffE'
+client_token = 'NzIwNzkwMzg2MzM5MDg2MzUx.XuwgWQ.SVz4hcRge9AkX5vHekdVXfYTzx4'
 
 regex = re.compile(
         r'^(?:http|ftp)s?://' # http:// or https://
@@ -131,16 +132,13 @@ async def get_link(ctx, *, args):
         for i in range(len(descArray)):
             await ctx.send(descArray[i] + " " + linkArray[i])
 
-@client.command(pass_context=True)
+@client.command()
 async def join(ctx):
-    channel = ctx.message.author.voice.voice_channel
-    await client.join_voice_channel(channel)
+    channel = ctx.author.voice.channel
+    await channel.connect()
 
-
-@client.command(pass_context=True)
+@client.command()
 async def leave(ctx):
-    server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    await voice_client.disconnect()
+    await ctx.voice_client.disconnect()
 
 client.run(client_token)
