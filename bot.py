@@ -28,7 +28,9 @@ general_channel_id = 720670834561253489
 debug_channel_id = 721143621536972951
 
 def get_groovy_message(msg):
-    if "-p" in msg.lower():
+    if "-join" in msg.lower():
+        return "GroovyBot will join when he wants to >:("
+    elif "-p" in msg.lower():
         return "Dude what is your song choice..."
     elif "-skip" in msg.lower():
         return "Why are you skipping man"
@@ -129,5 +131,16 @@ async def get_link(ctx, *, args):
         for i in range(len(descArray)):
             await ctx.send(descArray[i] + " " + linkArray[i])
 
+@client.command(pass_context=True)
+async def join(ctx):
+    channel = ctx.message.author.voice.voice_channel
+    await client.join_voice_channel(channel)
+
+
+@client.command(pass_context=True)
+async def leave(ctx):
+    server = ctx.message.server
+    voice_client = client.voice_client_in(server)
+    await voice_client.disconnect()
 
 client.run(client_token)
