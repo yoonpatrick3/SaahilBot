@@ -9,7 +9,7 @@ from firebasedb import get_counter, update_counter, set_link, get_fb_link
 
 client = commands.Bot(command_prefix = 'kumar ')
 
-client_token = 'NzIwNzkwMzg2MzM5MDg2MzUx.XuLy0A.BxeKRwipa_ATdQtbUU3jyF4O96o'
+client_token = 'NzIwNzkwMzg2MzM5MDg2MzUx.XuwcPQ.xEAvAMjQdo6QIU-ImRIdP8K-ffE'
 
 regex = re.compile(
         r'^(?:http|ftp)s?://' # http:// or https://
