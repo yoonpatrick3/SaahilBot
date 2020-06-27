@@ -25,7 +25,9 @@ patID = 391344148738998273
 botID = 720790386339086351
 work_channel_id = 720745806939815997
 groovy_channel_id = 720671297633517628
+groovy_channel_teamWYA = 726295028422672454
 general_channel_id = 720670834561253489
+general_channel_teamWYA = 726293855984680994
 debug_channel_id = 721143621536972951
 
 def get_groovy_message(msg):
@@ -54,11 +56,11 @@ async def on_member_join(member):
 @client.event
 async def on_message(message):
     if int(message.author.id) == saahilID:
-        if int(message.channel.id) == general_channel_id or int(message.channel.id) == debug_channel_id:
+        if int(message.channel.id) == general_channel_id or int(message.channel.id) == debug_channel_id or int(message.channel.id) == general_channel_teamWYA:
             print("in here")
             update_counter()
             await message.channel.send("Shut up Saahil <:WeirdChamp:720710138759086080>")
-        elif int(message.channel.id) == groovy_channel_id:
+        elif int(message.channel.id) == groovy_channel_id or int(message.channel.id) == groovy_channel_teamWYA:
             await message.channel.send(get_groovy_message(message.content))
     await client.process_commands(message)
 
