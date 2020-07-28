@@ -84,7 +84,8 @@ async def _8ball(ctx, *, question):
                 "i cry",
                 "p cool question. too bad idk the answer to it",
                 "ahh lemme ask irene first",
-                "kk sounds good"]
+                "kk sounds good",
+                "sad"]
 
     choices = random.choice(responses)
 
