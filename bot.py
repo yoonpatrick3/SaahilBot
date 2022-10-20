@@ -2,10 +2,11 @@ from discord.ext import commands
 import random
 import re
 from firebasedb import get_counter, update_counter, set_link, get_fb_link
+#import pynacl
 
 client = commands.Bot(command_prefix = 'kumar ')
 
-client_token = 'NzIwNzkwMzg2MzM5MDg2MzUx.XuwcPQ.xEAvAMjQdo6QIU-ImRIdP8K-ffE'
+client_token = 'NzIwNzkwMzg2MzM5MDg2MzUx.XuwgWQ.SVz4hcRge9AkX5vHekdVXfYTzx4'
 
 regex = re.compile(
         r'^(?:http|ftp)s?://' # http:// or https://
@@ -20,7 +21,9 @@ patID = 391344148738998273
 botID = 720790386339086351
 work_channel_id = 720745806939815997
 groovy_channel_id = 720671297633517628
+groovy_channel_teamWYA = 726295028422672454
 general_channel_id = 720670834561253489
+general_channel_teamWYA = 726293855984680994
 debug_channel_id = 721143621536972951
 
 def get_groovy_message(msg):
@@ -49,11 +52,11 @@ async def on_member_join(member):
 @client.event
 async def on_message(message):
     if int(message.author.id) == saahilID:
-        if int(message.channel.id) == general_channel_id or int(message.channel.id) == debug_channel_id:
+        if int(message.channel.id) == general_channel_id or int(message.channel.id) == debug_channel_id or int(message.channel.id) == general_channel_teamWYA:
             print("in here")
             update_counter()
             await message.channel.send("Shut up Saahil <:WeirdChamp:720710138759086080>")
-        elif int(message.channel.id) == groovy_channel_id:
+        elif int(message.channel.id) == groovy_channel_id or int(message.channel.id) == groovy_channel_teamWYA:
             await message.channel.send(get_groovy_message(message.content))
     await client.process_commands(message)
 
@@ -88,7 +91,8 @@ async def _8ball(ctx, *, question):
                 "kk sounds good",
                 "TT",
                 "While you sheeple are paying to get educated, I'm out here making money",
-                "Agreege"]
+                "Agreege",
+                "sad"]
 
     choices = random.choice(responses)
 
@@ -138,16 +142,17 @@ async def get_link(ctx, *, args):
         for i in range(len(descArray)):
             await ctx.send(descArray[i] + " " + linkArray[i])
 
-@client.command(pass_context=True)
+@client.command()
 async def join(ctx):
-    channel = ctx.message.author.voice.voice_channel
-    await client.join_voice_channel(channel)
+    channel = ctx.author.voice.channel
+    await channel.connect()
 
-
-@client.command(pass_context=True)
+@client.command()
 async def leave(ctx):
-    server = ctx.message.server
-    voice_client = client.voice_client_in(server)
-    await voice_client.disconnect()
+    await ctx.voice_client.disconnect()
+
+@client.command()
+async def shut(ctx):
+    await ctx.send("Shut up Saahil WeirdChamp", tts=True)
 
 client.run(client_token)
