@@ -1,9 +1,5 @@
-import discord
 from discord.ext import commands
 import random
-import time
-import asyncio
-import os
 import re
 from firebasedb import get_counter, update_counter, set_link, get_fb_link
 
@@ -65,9 +61,17 @@ async def on_message(message):
 async def catch(ctx):
     await ctx.send('I caught it!')
 
+@client.command()
+async def dean(ctx):
+  await ctx.send('he\'s so hot.....')
+
+@client.command()
+async def patrick(ctx):
+  await ctx.send('Bruh eww')
+
 @client.command(aliases=['8ball'])
 async def _8ball(ctx, *, question):
-    responses = ["Sorry, can't answer right now. I'm jamming with Irene.",
+    responses = ["Sorry, can't answer right now. I'm jamming with Megan, and not Irene.",
                 "Wait lemme walk Bubba first.",
                 "Just ask Stanley, he's got all the answers.",
                 "That is a Pepega question KEKG",
@@ -76,12 +80,15 @@ async def _8ball(ctx, *, question):
                 "Sounds good babe <3",
                 "hmm not sure",
                 "uhh gimme a sec",
-                "uhh sorry bb im talking to irene",
+                "uhh sorry bb im talking to megan",
                 "yikes",
                 "i cry",
                 "p cool question. too bad idk the answer to it",
                 "ahh lemme ask irene first",
-                "kk sounds good"]
+                "kk sounds good",
+                "TT",
+                "While you sheeple are paying to get educated, I'm out here making money",
+                "Agreege"]
 
     choices = random.choice(responses)
 
